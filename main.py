@@ -1,12 +1,13 @@
 import pygame as pg
 
+
 # to exit program
 from sys import exit
 
 # create window
 WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 400
-MAZE_SCREEN_RATIO = 0.95
+MAZE_SCREEN_RATIO = 0.8
 WINDOW_CAPTION = "maze-simulation"
 
 
