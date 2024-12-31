@@ -8,11 +8,11 @@ from sys import exit
 WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 400
 WINDOW_CAPTION = "maze-simulation"
-WINDOW_COLOR = 'Pink'
+WINDOW_COLOR = 'Black'
 
 # maze properties
 PATH_COLOR = 'Black'
-WALL_COLOR = 'Red'
+WALL_COLOR = 'Green'
 WALL_THICKNESS = 2
 MAZE_SCREEN_RATIO = 0.95
 

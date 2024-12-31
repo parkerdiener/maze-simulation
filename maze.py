@@ -22,9 +22,6 @@ class Maze:
             widthRatio = height / width
             mazePixelWidth = mazePixelHeight // widthRatio
 
-        self.BG = pg.Surface((mazePixelWidth, mazePixelHeight))
-        self.BG.fill(wallColor)
-
         # Locate coords for maze so it's centered
         self.coords = (windowW - mazePixelWidth) // 2, (windowH - mazePixelHeight) // 2
 
@@ -34,9 +31,23 @@ class Maze:
         # temporary objects used for the construction of the MazeGraph
         cellNum = 0
         cellSideLen = (mazePixelWidth - (2 * stroke)) // width
+        xOffset = (mazePixelWidth - (cellSideLen * width)) // 2
+        yOffset = (mazePixelHeight - (cellSideLen * height)) // 2
         startXLocation, cellYLocation = self.coords
-        startXLocation += stroke
-        cellYLocation += stroke
+        startXLocation += stroke + xOffset
+        cellYLocation += stroke + yOffset
+
+        # Create background that fits according to the maze
+        mazePixelWidth = cellSideLen * width + 2 * stroke
+        mazePixelHeight = cellSideLen * height + 2 * stroke
+
+        self.BG = pg.Surface((mazePixelWidth, mazePixelHeight))
+        self.BG.fill(wallColor)
+
+        xCoord = startXLocation - stroke
+        yCoord = cellYLocation - stroke
+
+        self.coords = xCoord, yCoord
 
         cellList = []
 
