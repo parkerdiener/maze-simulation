@@ -9,3 +9,6 @@ class Cell:
         self.cellSurface.fill(color)
         self.coords = coords
 
+    def __repr__(self):
+        return f"{self.label}"
+

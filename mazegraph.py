@@ -22,9 +22,9 @@ class MazeGraph:
         self.walls[cell1].append(wall)
         self.walls[cell2].append(wall)
 
-    def has_wall(self, cell1, cell2):
+    def get_wall(self, cell1, cell2):
         # Check if a wall exists between two cells
         for wall in self.walls.get(cell1, []):
-            if wall.toCell == cell2 and wall.weight == 0:
-                return True
-        return False
+            if (wall.cell2 == cell2 or wall.cell1 == cell2) and wall.weight == 0:
+                return wall
+        return None

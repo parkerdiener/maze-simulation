@@ -1,3 +1,5 @@
+from collections import deque
+import random
 from mazegraph import MazeGraph
 import pygame as pg
 
@@ -83,7 +85,7 @@ class Maze:
                     wallHeight = cellSideLen
                     wallXLocation = cellXLocation - (stroke / 2)
                     wallYLocation = cellYLocation
-                    self.maze.add_wall(cellList[j - 1], currCell,
+                    self.maze.add_wall(cellList[-2], currCell,
                                        (wallWidth, wallHeight),
                                        (wallXLocation, wallYLocation), 0, wallColor)
 
@@ -96,7 +98,7 @@ class Maze:
 
     # Return all cells in the maze
     def get_cells(self):
-        return self.maze.walls.keys()
+        return list(self.maze.walls.keys())
 
     # Return all walls in the maze
     def get_walls(self):
@@ -105,4 +107,66 @@ class Maze:
             walls.update(wallList)
         return list(walls)
 
-    # def GenerateDFS(self):
+    # Generate the maze using a DFS algorithm
+    def GenerateDFS(self, startCell, pathColor):
+
+        visitedCells = set()
+        stack = deque()
+
+        visitedCells.add(startCell)
+        stack.append(startCell)
+
+        while stack:
+
+            currCell = stack.pop()
+            nextCell = self.randomUnvisitedNeighbor(currCell, visitedCells)
+
+            if nextCell:
+
+                stack.append(currCell)
+
+                self.breakWall(currCell, nextCell, pathColor)
+
+                visitedCells.add(nextCell)
+                stack.append(nextCell)
+
+        return True
+
+    # Returns random unvisited neighbor to the cell
+    # if none, returns None
+    def randomUnvisitedNeighbor(self, cell, visitedCells):
+
+        unvisitedNeighbors = []
+
+        for neighbor in self.getNeighbors(cell):
+            if neighbor not in visitedCells:
+                unvisitedNeighbors.append(neighbor)
+
+        if unvisitedNeighbors:
+            return random.choice(unvisitedNeighbors)
+
+        return None
+
+    # Returns list of neighboring cells to cell
+    def getNeighbors(self, cell):
+
+        neighbors = []
+
+        for wall in self.maze.walls[cell]:
+            if wall.cell1 == cell:
+                neighbors.append(wall.cell2)
+            else:
+                neighbors.append(wall.cell1)
+
+        return neighbors
+
+    def breakWall(self, cell1, cell2, pathColor):
+
+        wall = self.maze.get_wall(cell1, cell2)
+
+        if wall:
+            wall.weight = 1
+            wall.wallSurface.fill(pathColor)
+            return True
+
+        return False
